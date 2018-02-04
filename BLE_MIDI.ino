@@ -22,8 +22,8 @@ bool deviceConnected = false;
 uint8_t midiPacket[] = {
    0x80,  // header
    0x80,  // timestamp, not implemented 
-   0x00,  // status
-   0x3c,  // 0x3c == 60 == middle c
+   0xB0,  // status
+   0x50,  // 0x3c == 60 == middle c
    0x00   // velocity
 };
 
@@ -73,17 +73,17 @@ void loop() {
   if (deviceConnected) {
 
    // note down
-   midiPacket[2] = 0x90; // note down, channel 0
-   midiPacket[4] = 127;  // velocity
+   
+   midiPacket[4] = 127;  // on
    pCharacteristic->setValue(midiPacket, 5); // packet, length in bytes
    pCharacteristic->notify();
 
    // play note for 500ms
-   delay(500);
+   delay(100);
 
    // note up
-   midiPacket[2] = 0x80; // note up, channel 0
-   midiPacket[4] = 0;    // velocity
+   
+   midiPacket[4] = 0;    // off
    pCharacteristic->setValue(midiPacket, 5); // packet, length in bytes)
    pCharacteristic->notify();
 
